@@ -1,8 +1,8 @@
 import React from 'react';
-import { Router } from 'react-router';
+import { History } from 'react-router';
 
 const Search = React.createClass({
-  mixins: [Router.History],
+  mixins: [History],
   setRef: function (userName) {
     this.userNameRef = userName;
   },
