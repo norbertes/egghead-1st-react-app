@@ -8,51 +8,60 @@ import UserProfile from '../components/Github/UserProfile';
 import Firebase from 'firebase';
 import ReactFireMixin from 'reactfire';
 
+import Helpers from '../utils/helpers';
+
 const Profile = React.createClass({
   mixins: [ReactFireMixin],
 
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       notes: [1, 2, 3],
-      bio: {
-        name: 'Dummy name'
-      },
-      repos: ['a', 'b', 'c']
+      bio: {},
+      repos: []
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     this.ref = new Firebase('https://brilliant-fire-8091.firebaseio.com/');
     let childRef = this.ref.child(this.props.params.userName);
     this.bindAsArray(childRef, 'notes');
+
+    Helpers.getGithubInfo(this.props.params.userName)
+      .then((data) => {
+        this.setState({
+          bio: data.bio,
+          repos: data.repos
+        })
+      });
   },
 
-  componenWillUnmount: function() {
+  componenWillUnmount: function () {
     this.unbind('notes');
   },
 
   handleAddNote: function (newNote) {
     // update firebase /w new note
-    this.ref.child(this.props.params.userName)
-            .child(this.state.notes.length)
-            .set(newNote)
+    this.ref
+      .child(this.props.params.userName)
+      .child(this.state.notes.length)
+      .set(newNote)
   },
 
-  render: function() {
+  render: function () {
     return (
       <div className="row">
         <div className="col-md-4">
           <UserProfile username={this.props.params.userName}
-                       bio={this.state.bio} />
+                       bio={this.state.bio}/>
         </div>
         <div className="col-md-4">
           <Repos username={this.props.params.userName}
-                 repos={this.state.repos} />
+                 repos={this.state.repos}/>
         </div>
         <div className="col-md-4">
           <Notes username={this.props.params.userName}
                  notes={this.state.notes}
-                 addNote={this.handleAddNote} />
+                 addNote={this.handleAddNote}/>
         </div>
       </div>
     )
