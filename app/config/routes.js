@@ -7,8 +7,6 @@ import Main from '../components/Main';
 import Home from '../components/Home';
 import Profile from '../components/Profile';
 
-//let DefaultRoute = Router.defaultRoute;
-
 export default (
   <Router>
     <Route path="/" component={Main}>

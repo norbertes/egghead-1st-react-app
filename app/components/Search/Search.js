@@ -1,5 +1,4 @@
 import React from 'react';
-//import { History } from 'react-router';
 
 class Search extends React.Component {
   setRef(userName) {
