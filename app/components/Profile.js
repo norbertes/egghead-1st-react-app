@@ -8,7 +8,7 @@ import UserProfile from '../components/Github/UserProfile';
 import Firebase from 'firebase';
 import ReactFireMixin from 'reactfire';
 
-import Helpers from '../utils/helpers';
+import getGithubInfo from '../utils/helpers';
 
 const Profile = React.createClass({
   mixins: [ReactFireMixin],
@@ -21,12 +21,11 @@ const Profile = React.createClass({
     }
   },
 
-  componentDidMount: function () {
-    this.ref = new Firebase('https://brilliant-fire-8091.firebaseio.com/');
-    let childRef = this.ref.child(this.props.params.userName);
+  init: function(username) {
+    let childRef = this.ref.child(username);
     this.bindAsArray(childRef, 'notes');
 
-    Helpers.getGithubInfo(this.props.params.userName)
+    getGithubInfo(username)
       .then((data) => {
         this.setState({
           bio: data.bio,
@@ -35,8 +34,18 @@ const Profile = React.createClass({
       });
   },
 
+  componentDidMount: function () {
+    this.ref = new Firebase('https://brilliant-fire-8091.firebaseio.com/');
+    this.init(this.props.params.userName);
+  },
+
   componenWillUnmount: function () {
     this.unbind('notes');
+  },
+
+  componentWillReceiveProps: function (nextProps) {
+    this.unbind('notes');
+    this.init(nextProps.params.userName);
   },
 
   handleAddNote: function (newNote) {

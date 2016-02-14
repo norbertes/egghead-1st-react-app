@@ -19,9 +19,4 @@ function getGithubInfo(username) {
     }));
 }
 
-const helpers = {
-  getGithubInfo,
-};
-
-
-export default helpers;
+export default getGithubInfo;

@@ -1,23 +1,24 @@
 import React from 'react';
-import { History } from 'react-router';
+//import { History } from 'react-router';
 
-const Search = React.createClass({
-  mixins: [History],
-  setRef: function (userName) {
+class Search extends React.Component {
+  setRef(userName) {
     this.userNameRef = userName;
-  },
-  handleSubmit: function () {
+  }
+
+  handleSubmit() {
     let username = this.userNameRef.value;
     this.userNameRef.value = '';
-    this.history.pushState(null, `profile/${username}`);
-  },
-  render: function () {
+    this.props.history.pushState(null, `/profile/${username}`);
+  }
+
+  render() {
     return (
       <div className="col-xs-12">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group col-sm-7">
             <input type="text"
-                   ref={this.setRef}
+                   ref={this.setRef.bind(this)}
             />
           </div>
           <div className="form-group col-sm-5">
@@ -29,6 +30,10 @@ const Search = React.createClass({
       </div>
     );
   }
-});
+}
+
+Search.propTyes = {
+  history: React.PropTypes.object.isRequired,
+};
 
 export default Search;

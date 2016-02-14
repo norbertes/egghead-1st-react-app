@@ -1,17 +1,15 @@
 'use strict';
 
-let React = require('react');
-let ReactDOM = require('react-dom');
+import React from 'react';
 
-
-let Home = React.createClass({
-  render: function() {
+class Home extends React.Component {
+  render() {
     return (
       <h2 className="text-center">
         Search by Github username above
       </h2>
     )
   }
-});
+}
 
 export default Home;
